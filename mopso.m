@@ -21,7 +21,7 @@ nGrid = 50;    % Number of Grids per Dimension
 alpha = 0.1;    % Inflation Rate
 beta = 2;    % Leader Selection Pressure
 gamma = 2;    % Deletion Selection Pressure
-mu = 0.8;    % Mutation Rate
+mu = 0.4;    % Mutation Rate
 
 % Data Structure
 empty_particle.Position = [];
@@ -52,8 +52,8 @@ for i = 1:nPop
 end
 
 % Relax Constraints
-% Epsilon  =  max([pop.CV],  [],  2);
-Epsilon = [1; 1]; 
+Epsilon  =  max([pop.CV],  [],  2);
+% Epsilon = 1; 
 
 pop = DetermineDomination(pop,  Epsilon);
 
@@ -133,7 +133,7 @@ for it = 1:MaxIt
     end
     
     % Opposition-Based Learning Every 10 Generations
-    if mod(it,  10) == 0   
+    if mod(it,  5) == 0   
         for i = 1 : nPop
             OblSol.Position = OBL(pop(i).Position, VarMin, VarMax);
             [OblSol.Cost, OblSol.CV] = CostFunction(OblSol.Position);
@@ -188,8 +188,8 @@ for it = 1:MaxIt
    
     % Damping Inertia Weight
     w = w*wdamp;
-    Epsilon  =  Epsilon * 0.95;
-%     Epsilon  =  Epsilon * (1 - it / 100);
+%     Epsilon = Epsilon * 0.93;
+    Epsilon  =  Epsilon * (1 - it / 100);
     
 end
 

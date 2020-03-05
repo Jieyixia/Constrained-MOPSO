@@ -5,9 +5,9 @@ func = {'zdt1', 'zdt2', 'zdt3', 'zdt4', 'zdt6',...
          'osy', 'ctp1', 'ctp2', 'ctp3', 'ctp4', 'ctp5',...
          'ctp6', 'ctp7'};
 
-MaxIt = 100;
+MaxIt = 200;
 
-for func_no = 12
+for func_no = 17
     
     func_name = func{func_no}; 
 
