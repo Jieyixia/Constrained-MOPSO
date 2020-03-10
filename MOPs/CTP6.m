@@ -5,6 +5,10 @@ function [z, v] = CTP6(x)
     z1 = x(1);
    
     g = 1 + 9 * (sum(x(2 : end)) / (n - 1))^0.25;
+%     g = 1 + sum(x(2 : end));
+%     g = 1 + 0.2 * sum(x(2 : end));
+%     g = 1 + sum(x(2 : end).^2);
+%     g = 1 + sum(  x(2 : end).^0.25);
     
     z2 = g * (1 - z1 / g);
     
@@ -20,5 +24,5 @@ function [z, v] = CTP6(x)
     v = -v;
     
     v = max(v, 0);
-    
+   
 end

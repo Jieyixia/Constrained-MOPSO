@@ -7,7 +7,7 @@ func = {'zdt1', 'zdt2', 'zdt3', 'zdt4', 'zdt6',...
 
 MaxIt = 200;
 
-for func_no = 17
+parfor func_no = 17
     
     func_name = func{func_no}; 
 

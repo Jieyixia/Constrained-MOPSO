@@ -17,7 +17,7 @@ function PlotConstraints(pop)
         
         plot(pop_costs(1, ~idx), pop_costs(2, ~idx), 'b+');
         
-        if sum(idx) == 0
+        if sum(idx) == 0 
             legend('infeasible')
         else
             if sum(~idx) == 0
@@ -31,5 +31,5 @@ function PlotConstraints(pop)
         xlabel('1^{st} Objective');
         ylabel('2^{nd} Objective');
     end
-    hold on;
+    hold off;
 end

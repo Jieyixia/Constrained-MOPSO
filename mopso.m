@@ -53,7 +53,7 @@ end
 
 % Relax Constraints
 Epsilon  =  max([pop.CV],  [],  2);
-% Epsilon = 1; 
+% Epsilon = 10; 
 
 pop = DetermineDomination(pop,  Epsilon);
 
@@ -87,7 +87,8 @@ for it = 1:MaxIt
         [pop(i).Cost,  pop(i).CV] = CostFunction(pop(i).Position);
         
         % Apply Mutation
-        pm = (1-(it-1)/(MaxIt-1))^(1/mu);
+        pm = (1-(it-1)/(100-1))^(1/mu);
+        
         if rand<pm
             NewSol.Position = Mutate(pop(i).Position, pm, VarMin, VarMax);
             
@@ -131,24 +132,24 @@ for it = 1:MaxIt
         end
         
     end
-    
-    % Opposition-Based Learning Every 10 Generations
-    if mod(it,  5) == 0   
-        for i = 1 : nPop
-            OblSol.Position = OBL(pop(i).Position, VarMin, VarMax);
-            [OblSol.Cost, OblSol.CV] = CostFunction(OblSol.Position);
-            if EpsilonDominates(OblSol, pop(i), Epsilon)
-                pop(i).Position = OblSol.Position;
-                pop(i).Cost = OblSol.Cost;
-                pop(i).CV = OblSol.CV;
-            end
-            if EpsilonDominates(pop(i), pop(i).Best, Epsilon)
-                pop(i).Best.Position = pop(i).Position;
-                pop(i).Best.Cost = pop(i).Cost;
-                pop(i).Best.CV = pop(i).CV;
-            end
-        end
-    end
+%     
+%     % Opposition-Based Learning Every 10 Generations
+%     if mod(it,  5) == 0   
+%         for i = 1 : nPop
+%             OblSol.Position = OBL(pop(i).Position, VarMin, VarMax);
+%             [OblSol.Cost, OblSol.CV] = CostFunction(OblSol.Position);
+%             if EpsilonDominates(OblSol, pop(i), Epsilon)
+%                 pop(i).Position = OblSol.Position;
+%                 pop(i).Cost = OblSol.Cost;
+%                 pop(i).CV = OblSol.CV;
+%             end
+%             if EpsilonDominates(pop(i), pop(i).Best, Epsilon)
+%                 pop(i).Best.Position = pop(i).Position;
+%                 pop(i).Best.Cost = pop(i).Cost;
+%                 pop(i).Best.CV = pop(i).CV;
+%             end
+%         end
+%     end
    
     pop = DetermineDomination(pop,  Epsilon); 
     
@@ -181,15 +182,17 @@ for it = 1:MaxIt
     end
    
     % plot
-    figure(1)
-    PlotConstraints(rep);
-    hold off;
-    pause(0.1)
+%     figure(1)
+%     PlotConstraints(rep);
+%     hold off;
+%     pause(0.1)
    
     % Damping Inertia Weight
     w = w*wdamp;
-%     Epsilon = Epsilon * 0.93;
-    Epsilon  =  Epsilon * (1 - it / 100);
+%     Epsilon = Epsilon * 0.99;
+    Epsilon  =  Epsilon * (1 - it / MaxIt);
+    
+    disp(['max=', num2str(max([rep.CV]), '%.4f'), ',min=', num2str(min([rep.CV]), '%.4f'), ',E=', num2str(Epsilon, '%.4f'), ',Fea=', num2str(sum([rep.CV] == 0)/numel(rep), '%.2f')])
     
 end
 
@@ -197,7 +200,7 @@ h  =  figure;
 PlotConstraints(rep);
 hold off;
 
-path  =  ['figure_20200227/',  'CTP6_wdamp095'];
+path  =  ['figure/20200310/',  'CTP6_MaxIt=100'];
 if ~exist(path, 'dir')
     mkdir(path);
 end
