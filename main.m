@@ -5,15 +5,16 @@ func = {'zdt1', 'zdt2', 'zdt3', 'zdt4', 'zdt6',...
          'osy', 'ctp1', 'ctp2', 'ctp3', 'ctp4', 'ctp5',...
          'ctp6', 'ctp7'};
 
-MaxIt = 200;
+for MaxIt = 300 : 100 : 600
 
-parfor func_no = 17
+for func_no = 17
     
     func_name = func{func_no}; 
 
-    for i = 1 : 30
+    parfor i = 1 : 30
         mopso(seed(i), func{func_no}, MaxIt, i);
     end
     
+end
 end
 

@@ -87,7 +87,7 @@ for it = 1:MaxIt
         [pop(i).Cost,  pop(i).CV] = CostFunction(pop(i).Position);
         
         % Apply Mutation
-        pm = (1-(it-1)/(100-1))^(1/mu);
+        pm = (1-(it-1)/(MaxIt-1))^(1/mu);
         
         if rand<pm
             NewSol.Position = Mutate(pop(i).Position, pm, VarMin, VarMax);
@@ -132,24 +132,24 @@ for it = 1:MaxIt
         end
         
     end
-%     
-%     % Opposition-Based Learning Every 10 Generations
-%     if mod(it,  5) == 0   
-%         for i = 1 : nPop
-%             OblSol.Position = OBL(pop(i).Position, VarMin, VarMax);
-%             [OblSol.Cost, OblSol.CV] = CostFunction(OblSol.Position);
-%             if EpsilonDominates(OblSol, pop(i), Epsilon)
-%                 pop(i).Position = OblSol.Position;
-%                 pop(i).Cost = OblSol.Cost;
-%                 pop(i).CV = OblSol.CV;
-%             end
-%             if EpsilonDominates(pop(i), pop(i).Best, Epsilon)
-%                 pop(i).Best.Position = pop(i).Position;
-%                 pop(i).Best.Cost = pop(i).Cost;
-%                 pop(i).Best.CV = pop(i).CV;
-%             end
-%         end
-%     end
+    
+    % Opposition-Based Learning Every 10 Generations
+    if mod(it,  5) == 0   
+        for i = 1 : nPop
+            OblSol.Position = OBL(pop(i).Position, VarMax, VarMin);
+            [OblSol.Cost, OblSol.CV] = CostFunction(OblSol.Position);
+            if EpsilonDominates(OblSol, pop(i), Epsilon)
+                pop(i).Position = OblSol.Position;
+                pop(i).Cost = OblSol.Cost;
+                pop(i).CV = OblSol.CV;
+            end
+            if EpsilonDominates(pop(i), pop(i).Best, Epsilon)
+                pop(i).Best.Position = pop(i).Position;
+                pop(i).Best.Cost = pop(i).Cost;
+                pop(i).Best.CV = pop(i).CV;
+            end
+        end
+    end
    
     pop = DetermineDomination(pop,  Epsilon); 
     
@@ -182,10 +182,10 @@ for it = 1:MaxIt
     end
    
     % plot
-%     figure(1)
-%     PlotConstraints(rep);
-%     hold off;
-%     pause(0.1)
+    figure(1)
+    PlotConstraints(rep);
+    hold off;
+    pause(0.1)
    
     % Damping Inertia Weight
     w = w*wdamp;
@@ -200,7 +200,7 @@ h  =  figure;
 PlotConstraints(rep);
 hold off;
 
-path  =  ['figure/20200310/',  'CTP6_MaxIt=100'];
+path  =  ['figure/20200311/',  'CTP6_OBL_MaxIt=', num2str(MaxIt)];
 if ~exist(path, 'dir')
     mkdir(path);
 end
